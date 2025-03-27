@@ -1,0 +1,151 @@
+
+
+Cómo hacer la evaluación In-Sample del sistema DKTrend2016. 
+ 
+Lo primero a tener en cuenta es el tipo de sistema y los mercados en lo que puede funcionar 
+mejor. Esto  se  concreta  durante  la  fase  de  construcción.  En  nuestro caso, el  DKTrend está 
+diseñado   para   capturar   las   tendencias   intradiarias   que   ocurren   en   momentos   de   baja 
+volatilidad. Por tanto, es un sistema apropiado para futuros sobre índices.  
+Los productos en los que se deberá evaluar son:  
+- Índices USA: ES, TF, EMD, YM, NQ 
+- Índices EU: FDAX, FESX, CAC, FIBEX, FTI. 
+La evaluación In-Sample (IS) se hará de 2001 a 2007, quedando libres los años 2008-2016 para 
+la evaluación Out-Sample (OS). 
+Las plantillas de sesión serán: 
+- Índices USA: 15:30 h a 22:15 h. 
+- Índices EU: 9:00 a 19:15 h. 
+El mejor time frame se determinará mediante el análisis del tíming. Siendo el intervalo mejor 
+(determinado en la fase de construcción): 10 a 35 minutos. 
+El  sistema  será  evaluado  incluyendo gastos  de  operativa (comisiones   +   deslizamiento). 
+Recomendamos aplicar los siguientes gastos r/t (por operación cerrada): 
+FESX = 12€, FDAX = 16€, FTI = 16€ CAC = 15€, FIBEX = 22€. 
+ES = 12$, YM = 12$, NQ = 12$, TF = 16$, EMD = 18$ 
+Ratios  diana: Recomendamos  optimizar  para  el  SQN.  Quienes utilicen otras  plataformas y no 
+dispongan  de  este  ratio  deberán  utilizar  algún  otro  que, implícita  o  explícitamente, combine 
+retorno  y  riesgo:  Sharpe,  Sortino,  Calmar,  Profit  Factor,  etc.  El ratio  deberá  ser  el  mismo 
+durante toda la evaluación. 
+La hoja Excel adjunta contiene una evaluación IS completa del sistema en el FDAX. 
+ 
+Pasos para realizar la evaluación IS del DKTrend2016: 
+ 
+1) Análisis del timing. El objeto es determinar el time frame más adecuada para operar el 
+sistema.  Se  realiza  aplicando  una  optimización  gruesa  sobre  los  2-3  parámetros  que 
+más afectan al comportamiento del sistema. En este caso se han elegido: 
+ 
+
+- “Media Lenta” entre 50 y 300 en incrementos de 50. 
+- “Media Rápida” entre 5 y 35 en incrementos de 5. 
+Los demás parámetros se dejan con los valores por defecto. 
+Esta optimización se aplica a la los TFs. entre 10 y 30 min. 
+En la Hoja Excel deben figurar: 
+- La imagen con el detalle de los parámetros de la optimización. 
+- La tabla con los resultados de la optimización para cada TF. 
+- Se calculan los valores promedio y máximo en cada TF para el ratio elegido. 
+- Se construyen la tabla y el gráfico.  
+- Se  toma  como  TF  de  referencia  aquel  que  muestre  valores  más  altos  del  promedio  y 
+máximo en el gráfico. 
+- Una vez elegido el TF se utiliza siempre ese en el resto de la evaluación. 
+ 
+ En la hoja “Análisis del Timing” de la Excel adjunta puede verse el proceso seguido en 
+el caso del FDAX. 
+ 
+2) Horario. Su objeto es determinar el rango horario de la operativa. En el caso del FDAX 
+procedemos a optimizar los parámetros: 
+ 
+- Hora comienzo: De 9:00 a 12:00 h. en incrementos de 25 min. 
+- Hora Fin: De 17:00 a 19:15 en incrementos de 25 min. 
+Hacemos la optimización entre 2001 y 2007 para el Ratio SQN y exportamos los resultados 
+a  Excel.  Como  se  trata  de  dos  parámetros  combinados, para  su  análisis  es  conveniente 
+utilizar  una  tabla  dinámica  y/o  un  mapa  3D.  Sobre los  valores  de  la  tabla  delimitamos  la 
+zona  robusta (aquella  en  la  que  se  obtienen  los  valores  más  altos  del  ratio)  y  el  valor  de 
+referencia  para  el  horario.  En  el  caso  del  FDAX  encontramos  que  la  ventana  óptima de 
+inicio es la primera hora de la mañana: 9:00-9:25 h. Como la plantilla horaria empieza a las 
+9:00, el cierre de vela se produce a las 9:25h. Por lo que, en la práctica, da lo mismo poner 
+9:00 h. que 9.25 h. La hora de fin es algo más amplia: 17:00-18:25 h. Fijamos como valores 
+de referencia 9:00 y 17:00. 
+Una vez elegido este horario, lo seguimos utilizando en el resto de la Evaluación. 
+ En la hoja “Horario” de la Excel adjunta puede verse el proceso seguido en el caso del 
+FDAX. 
+ 
+3) Período  de  las  EMAs  lenta  y  rápida. Estos  parámetros  son  clave  para  el rendimiento 
+de la estrategia. El objetivo será determinar la horquilla paramétrica de ambos (o zona 
+robusta) y el valor de referencia para el TF de 25 min. 
+En  sistemas que  utilizan  medias  o  indicadores  basados  en  medias como  núcleo  de  la 
+lógica  observaremos  que  los time  frames pequeños requieren  medias  más  largas,  y 
+viceversa. 
+
+Optimizamos para el ratio diana SQN del siguiente modo: 
+- Media Lenta: entre 50 y 350 en saltos de 10. 
+- Media Rápida: entre 2 y 35 en saltos de 1. 
+Una vez obtenidos los resultados, construimos una tabla dinámica y un gráfico 3D para acotar 
+el área de la zona robusta, y obtenemos los rangos: 130-290 para la media lenta y 5-18 para la 
+rápida. Los valores de referencia serían 270 y 10 respectivamente. 
+ 
+  En  la  hoja  “EMAs  Period”  de  la  Excel  adjunta  puede  verse  el  proceso  seguido  en  el 
+caso del FDAX. 
+ 
+4) Filtro  de  ADX.- El  objeto  de  este  filtro  es  detectar  el  inicio  de  una  tendencia  en  sus 
+fases  tempranas,  evitando  los  valores  extremos  del  ADX en  los  que  la  tendencia  ya 
+estaría prácticamente en fase de agotamiento.  
+El  filtro  que  se  ha  implementado  en  el  DKTrend  acumula  el  valor  máximo  del  ADX  en  “n” 
+periodos  y  le  resta  un  porcentaje  para  entrar  en  una  banda  dinámica  siempre  inferior  a  esos 
+valores máximos. Los parámetros a optimizar son: 
+- “Periodo  Max  ADX”.- Número  de  barras  para  el  cálculo  de  los  valores  máximos  del 
+ADX. Optimizamos entre 50 y 800, en saltos de 50. 
+-  “Tamaño Banda”.- Optimizamos entre 0,3 y 1, en saltos de 0,05. 
+Una vez obtenidos los resultados de  la optimización, construimos, como en la etapa anterior, 
+una  tabla  dinámica  y  un  mapa  3D  para  determinar  las  zonas  robustas  de  esta  pareja  de 
+parámetros.  Para  “Periodo  Max  ADX”  obtenemos  el  rango:  150-800  y  para  el  tamaño  de  la 
+banda 0,4-0,7. 
+ En la hoja  “Filtro  ADX”  de la Excel  adjunta  puede  verse el  proceso  seguido  en el  caso 
+del FDAX. 
+ 
+5) Resumen de Zonas robustas.  En una nueva hoja del libro Excel ponemos la tabla con 
+las zonas robustas  (máx. y min. de  cada parámetro),  los valores  de  salto y el valor de 
+referencia de cada parámetro (que es el de máximo rendimiento en la evaluación). 
+En la siguiente imagen vemos las zonas robustas obtenidas para el FDAX: 
+ 
+Es   importante   tener   en   cuenta   que   estas   zonas   robustas   son   las   que   utilizaremos 
+posteriormente en el Walk-Forward. 
+
+6) Top  Parameter. Seguidamente  procedemos  a  una  optimización  completa  con  las 
+horquillas paramétricas y valores de salto que figuran en la tabla de la zona robusta. El 
+objetivo  será  encontrar la  combinación  paramétrica  de   máximo  rendimiento  (y, 
+obviamente, la más sobreoptimizada). Es decir, nos interesa saber el potencial máximo 
+del  sistema  en  un  mercado  dado,  aun  a  sabiendas  de  que  esos  resultados  son 
+imposibles  de  replicar  en  real.  Sin  embargo,  cuando  se  realice  el Walk-Forward será 
+interesante saber qué porcentaje de ese potencial máximo somos capaces de capturar 
+en el Out-Sample.  
+ 
+Dado que el número de combinaciones paramétricas es elevadísimo, debemos recurrir 
+al  optimizador  genético.  Los  dos  parámetros  críticos  del  algoritmo  genético  son  el 
+número de generaciones (elegimos 15) y el tamaño de cada generación (elegimos 35).  
+ 
+Una vez concluida la optimización, obtenemos la combinación paramétrica de máximo 
+rendimiento o “top parameter”. 
+ 
+7) Test  de  sensibilidad. El  objetivo  de  este  test  es  determinar  la  sensibilidad  de  la 
+estrategia a  los  cambios  de time  frame.  Para  ello  realizamos  una  optimización en 
+distintos TFs. con  los  valores  obtenidos  en  el top  parameter. Para  el  caso  del  FDAX 
+hemos elegido un rango entre 15 y 35 minutos. 
+ 
+Lo  normal es  encontrar  rendimientos  peores  a medida  que  nos  alejamos  del  TF  en  el 
+que  se  ha  hecho  la  evaluación. Cuanta  menor  sensibilidad  tenga  el  sistema  a  los 
+cambios de TFs. más robusto será. 
+ 
+ En la hoja “Test Sensibilidad” de la Excel adjunta puede verse el proceso seguido en el 
+caso del FDAX. 
+ 
+8) Test  de  Consistencia. Con test  queremos  evaluar  el  rendimiento  de  la  estrategia  en 
+distintos periodos. Un sistema ideal debería tener un retorno año a año lo más regular 
+posible, con poca dispersión del beneficio acumulado y del drawdown. 
+ 
+Es importante comprobar, que no hay años en los que se pierda dinero y que el DD no 
+alcanza valores extremos ningún año. 
+ 
+ En la hoja “Test Consistencia” de la Excel adjunta puede verse el proceso seguido en el 
+caso del FDAX. 
+ 
+Con este último test concluye la evaluación In-Sample. 
+  
+ 

@@ -1,0 +1,20 @@
+{
+  "name": "trading",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "evaluate": "node src/evaluation/runEvaluation.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Trading system evaluation framework",
+  "dependencies": {
+    "pdf-parse": "^1.1.1",
+    "ninjatrader": "^1.0.0",
+    "moment": "^2.29.4",
+    "exceljs": "^4.4.0",
+    "lodash": "^4.17.21"
+  }
+}
